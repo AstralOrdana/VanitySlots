@@ -1,5 +1,6 @@
-package moe.ally.vanityslots.mixin;
+package gay.nyako.vanityslots.mixin;
 
+import dev.emi.trinkets.api.SlotType;
 import dev.emi.trinkets.api.TrinketComponent;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.entity.LivingEntity;
@@ -16,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Mixin(PiglinSpecificSensor.class)
 public class MixinSense {
@@ -32,15 +34,29 @@ public class MixinSense {
         }
 
         if (entity instanceof PlayerEntity) {
-            TrinketComponent component = TrinketsApi.getTrinketComponent((PlayerEntity) entity);
-            ItemStack vanity_item = component.getStack("feet:vanity");
-            if (!vanity_item.isEmpty()) visible_armor.set(0,vanity_item);
-            vanity_item = component.getStack("legs:vanity");
-            if (!vanity_item.isEmpty()) visible_armor.set(1,vanity_item);
-            vanity_item = component.getStack("chest:vanity");
-            if (!vanity_item.isEmpty()) visible_armor.set(2,vanity_item);
-            vanity_item = component.getStack("head:vanity");
-            if (!vanity_item.isEmpty()) visible_armor.set(3,vanity_item);
+            Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(entity);
+            if (component.isPresent()) {
+                TrinketComponent component2 = component.get();
+                for (var equipped : component2.getAllEquipped()) {
+                    SlotType slotType = equipped.getLeft().inventory().getSlotType();
+                    ItemStack itemStack = equipped.getRight();
+                    if (!slotType.getName().equals("vanity")) {
+                        continue;
+                    }
+                    if (slotType.getGroup().equals("feet")) {
+                        if (!itemStack.isEmpty()) visible_armor.set(0, itemStack);
+                    }
+                    if (slotType.getGroup().equals("legs")) {
+                        if (!itemStack.isEmpty()) visible_armor.set(1, itemStack);
+                    }
+                    if (slotType.getGroup().equals("chest")) {
+                        if (!itemStack.isEmpty()) visible_armor.set(2, itemStack);
+                    }
+                    if (slotType.getGroup().equals("head")) {
+                        if (!itemStack.isEmpty()) visible_armor.set(3, itemStack);
+                    }
+                }
+            }
         }
 
         Iterator var2 = visible_armor.iterator();

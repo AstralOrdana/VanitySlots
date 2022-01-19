@@ -1,8 +1,8 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "moe.ally.vanityslots.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "package": "gay.nyako.vanityslots.mixin",
+  "compatibilityLevel": "JAVA_17",
   "mixins": [
     "MixinGetAttackDistanceScalingFactor",
     "MixinSense"

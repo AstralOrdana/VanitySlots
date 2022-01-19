@@ -1,16 +1,17 @@
 {
   "schemaVersion": 1,
   "id": "vanityslots",
-  "version": "${version}",
+  "version": "1.1.0",
 
   "name": "Vanity Slots",
   "description": "This mod adds four extra armor slots! The armor you place in these slots doesn't improve your stats, but they display over your normal armor.",
   "authors": [
-    "AllyTally"
+    "AllyTally",
+    "Nyakorita"
   ],
   "contact": {
-    "homepage": "https://ally.moe/",
-    "sources": "https://github.com/AllyTally/VanitySlots"
+    "homepage": "https://nyako.gay/",
+    "sources": "https://github.com/NyakoFox/VanitySlots"
   },
 
   "license": "GPL-3.0",
@@ -19,7 +20,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "moe.ally.vanityslots.VanitySlots"
+      "gay.nyako.vanityslots.VanitySlots"
     ]
   },
   "mixins": [
@@ -27,10 +28,11 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.7.4",
+    "fabricloader": ">=0.12.12",
     "fabric": "*",
-    "minecraft": "1.16.x",
-    "trinkets": ">=2.4.0"
+    "minecraft": "1.18.x",
+    "trinkets": ">=3.1.0",
+    "java": ">=17"
   },
   "suggests": {
     "another-mod": "*"

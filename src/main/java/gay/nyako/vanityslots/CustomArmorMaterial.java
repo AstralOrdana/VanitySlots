@@ -1,4 +1,4 @@
-package moe.ally.vanityslots;
+package gay.nyako.vanityslots;
 
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorMaterial;
