@@ -17,18 +17,26 @@
 */
 package gay.nyako.vanityslots;
 
+import com.google.gson.Gson;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.util.TriState;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
+import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class VanitySlots implements ModInitializer {
 
 	public static final String MODID = "vanityslots";
 
-	//public static final Item GLOWING_LEATHER = new Item(new FabricItemSettings().group(ItemGroup.MISC));
+	public static Config config;
 
 	@Override
 	public void onInitialize() {
@@ -38,10 +46,32 @@ public class VanitySlots implements ModInitializer {
 		registerPredicate("chest", EquipmentSlot.CHEST);
 		registerPredicate("legs", EquipmentSlot.LEGS);
 		registerPredicate("feet", EquipmentSlot.FEET);
+
+
+		var configFile = new File(FabricLoader.getInstance().getConfigDir().toFile(), "vanityslots.json");
+		if (configFile.exists()) {
+			try {
+				FileReader reader = new FileReader(configFile);
+				Gson gson = new Gson();
+				config = gson.fromJson(reader, Config.class);
+				reader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				config = new Config();
+			}
+		} else {
+			config = new Config();
+		}
+	}
+
+	public boolean isInBlacklist(Item item) {
+		String itemID = Registry.ITEM.getId(item).toString();
+		return config.itemBlacklist.contains(itemID);
 	}
 
 	public void registerPredicate(String identifier, EquipmentSlot slot) {
 		TrinketsApi.registerTrinketPredicate(new Identifier("vanityslots", identifier), (stack, ref, entity) -> {
+			if (isInBlacklist(stack.getItem())) return TriState.FALSE;
 			if (stack.getItem() instanceof ArmorItem) {
 				if (((ArmorItem) stack.getItem()).getSlotType() == slot) {
 					return TriState.TRUE;

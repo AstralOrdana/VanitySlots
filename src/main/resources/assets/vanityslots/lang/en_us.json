@@ -7,5 +7,7 @@
     "trinkets.slot.head.vanity": "Head Vanity",
     "trinkets.slot.chest.vanity": "Chest Vanity",
     "trinkets.slot.legs.vanity": "Legs Vanity",
-    "trinkets.slot.feet.vanity": "Feet Vanity"
+    "trinkets.slot.feet.vanity": "Feet Vanity",
+    "title.vanityslots.config": "VanitySlots Config",
+    "key.vanityslots.config.blacklist": "Armor Blacklist"
 }
