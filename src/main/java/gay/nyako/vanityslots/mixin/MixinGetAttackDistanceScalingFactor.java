@@ -1,14 +1,12 @@
 package gay.nyako.vanityslots.mixin;
 
-import dev.emi.trinkets.api.SlotGroup;
 import dev.emi.trinkets.api.SlotType;
 import dev.emi.trinkets.api.TrinketComponent;
 import dev.emi.trinkets.api.TrinketsApi;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Pair;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -65,5 +63,35 @@ public class MixinGetAttackDistanceScalingFactor {
         }
 
         return i > 0 ? (float)j / (float)i : 0.0F;
+    }
+
+    @Redirect(method = "getAttackDistanceScalingFactor", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getEquippedStack(Lnet/minecraft/entity/EquipmentSlot;)Lnet/minecraft/item/ItemStack;"))
+    private ItemStack injected(LivingEntity instance, EquipmentSlot equipmentSlot) {
+        if (instance instanceof PlayerEntity) {
+            Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(instance);
+            if (component.isPresent()) {
+                TrinketComponent component2 = component.get();
+                for (var equipped : component2.getAllEquipped()) {
+                    SlotType slotType = equipped.getLeft().inventory().getSlotType();
+                    ItemStack itemStack = equipped.getRight();
+                    if (!slotType.getName().equals("vanity")) {
+                        continue;
+                    }
+                    if (slotType.getGroup().equals("feet")) {
+                        if (!itemStack.isEmpty()) return itemStack;
+                    }
+                    if (slotType.getGroup().equals("legs")) {
+                        if (!itemStack.isEmpty()) return itemStack;
+                    }
+                    if (slotType.getGroup().equals("chest")) {
+                        if (!itemStack.isEmpty()) return itemStack;
+                    }
+                    if (slotType.getGroup().equals("head")) {
+                        if (!itemStack.isEmpty()) return itemStack;
+                    }
+                }
+            }
+        }
+        return instance.getEquippedStack(equipmentSlot);
     }
 }

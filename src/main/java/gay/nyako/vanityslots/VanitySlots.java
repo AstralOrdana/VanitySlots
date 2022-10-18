@@ -25,6 +25,8 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
+import net.minecraft.tag.ItemTags;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -76,6 +78,9 @@ public class VanitySlots implements ModInitializer {
 				if (((ArmorItem) stack.getItem()).getSlotType() == slot) {
 					return TriState.TRUE;
 				}
+			}
+			if ((slot == EquipmentSlot.HEAD) && stack.isIn(TagKey.of(Registry.ITEM_KEY, new Identifier("vanityslots", "skulls")))) {
+				return TriState.TRUE;
 			}
 			return TriState.DEFAULT;
 		});
