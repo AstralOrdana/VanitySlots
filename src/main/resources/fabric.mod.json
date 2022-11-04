@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "vanityslots",
-  "version": "1.2.2",
+  "version": "1.2.3",
 
   "name": "Vanity Slots",
   "description": "This mod adds four extra armor slots! The armor you place in these slots doesn't improve your stats, but they display over your normal armor.",

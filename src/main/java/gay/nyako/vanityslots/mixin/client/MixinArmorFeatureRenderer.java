@@ -23,7 +23,6 @@ public class MixinArmorFeatureRenderer<T extends LivingEntity> {
         if (!(entity instanceof PlayerEntity))
             return entity.getEquippedStack(slot);
 
-
         Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(entity);
         if (component.isPresent()) {
             TrinketComponent component2 = component.get();

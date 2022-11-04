@@ -79,7 +79,7 @@ public class VanitySlots implements ModInitializer {
 					return TriState.TRUE;
 				}
 			}
-			if ((slot == EquipmentSlot.HEAD) && stack.isIn(TagKey.of(Registry.ITEM_KEY, new Identifier("vanityslots", "skulls")))) {
+			if ((slot == EquipmentSlot.HEAD) && stack.isIn(TagKey.of(Registry.ITEM_KEY, new Identifier("vanityslots", "wearable_on_head")))) {
 				return TriState.TRUE;
 			}
 			return TriState.DEFAULT;

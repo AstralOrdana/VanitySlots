@@ -4,12 +4,14 @@
   "package": "gay.nyako.vanityslots.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "MixinEndermanEntity",
     "MixinGetAttackDistanceScalingFactor",
     "MixinSense"
   ],
   "client": [
     "client.MixinArmorFeatureRenderer",
-    "client.MixinHeadFeatureRenderer"
+    "client.MixinHeadFeatureRenderer",
+    "client.MixinInGameHud"
   ],
   "injectors": {
     "defaultRequire": 1
