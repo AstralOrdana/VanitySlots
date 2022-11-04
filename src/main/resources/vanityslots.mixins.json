@@ -6,7 +6,7 @@
   "mixins": [
     "MixinEndermanEntity",
     "MixinGetAttackDistanceScalingFactor",
-    "MixinSense"
+    "MixinPiglinBrain"
   ],
   "client": [
     "client.MixinArmorFeatureRenderer",
