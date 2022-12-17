@@ -9,5 +9,6 @@
     "trinkets.slot.legs.vanity": "Legs Vanity",
     "trinkets.slot.feet.vanity": "Feet Vanity",
     "title.vanityslots.config": "VanitySlots Config",
-    "key.vanityslots.config.blacklist": "Armor Blacklist"
+    "text.autoconfig.vanityslots.option.itemBlacklist": "Armor Blacklist",
+    "text.autoconfig.vanityslots.option.itemBlacklist.@Tooltip": "Items which shouldn't be allowed in vanity slots."
 }

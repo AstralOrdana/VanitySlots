@@ -3,7 +3,6 @@ package gay.nyako.vanityslots.mixin;
 import dev.emi.trinkets.api.SlotType;
 import dev.emi.trinkets.api.TrinketComponent;
 import dev.emi.trinkets.api.TrinketsApi;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.mob.EndermanEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

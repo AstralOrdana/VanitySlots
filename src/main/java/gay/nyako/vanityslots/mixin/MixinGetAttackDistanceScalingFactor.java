@@ -22,8 +22,8 @@ public class MixinGetAttackDistanceScalingFactor {
 
         List<ItemStack> visible_armor = new ArrayList<ItemStack>();
         int i = 0;
-        for(Iterator var4 = iterable.iterator(); var4.hasNext(); ++i) {
-            ItemStack itemStack = (ItemStack)var4.next();
+        for(Iterator<ItemStack> var4 = iterable.iterator(); var4.hasNext(); ++i) {
+            ItemStack itemStack = var4.next();
             visible_armor.add(itemStack);
         }
 

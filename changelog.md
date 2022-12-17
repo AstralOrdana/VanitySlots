@@ -1,0 +1,1 @@
+This update targets Minecraft 1.19.3. ModMenu is no longer a required dependency, and a lot of internal changes have been made to make development of this mod easier.

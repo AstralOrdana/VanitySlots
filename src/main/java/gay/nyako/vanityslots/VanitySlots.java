@@ -17,28 +17,21 @@
 */
 package gay.nyako.vanityslots;
 
-import com.google.gson.Gson;
 import dev.emi.trinkets.api.TrinketsApi;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.util.TriState;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
-import net.minecraft.tag.ItemTags;
-import net.minecraft.tag.TagKey;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 
 public class VanitySlots implements ModInitializer {
-
-	public static final String MODID = "vanityslots";
-
-	public static Config config;
+	public static VanitySlotsConfig CONFIG;
 
 	@Override
 	public void onInitialize() {
@@ -49,26 +42,14 @@ public class VanitySlots implements ModInitializer {
 		registerPredicate("legs", EquipmentSlot.LEGS);
 		registerPredicate("feet", EquipmentSlot.FEET);
 
+		AutoConfig.register(VanitySlotsConfig.class, GsonConfigSerializer::new);
 
-		var configFile = new File(FabricLoader.getInstance().getConfigDir().toFile(), "vanityslots.json");
-		if (configFile.exists()) {
-			try {
-				FileReader reader = new FileReader(configFile);
-				Gson gson = new Gson();
-				config = gson.fromJson(reader, Config.class);
-				reader.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-				config = new Config();
-			}
-		} else {
-			config = new Config();
-		}
+		CONFIG = AutoConfig.getConfigHolder(VanitySlotsConfig.class).getConfig();
 	}
 
 	public boolean isInBlacklist(Item item) {
-		String itemID = Registry.ITEM.getId(item).toString();
-		return config.itemBlacklist.contains(itemID);
+		String itemID = Registries.ITEM.getId(item).toString();
+		return CONFIG.itemBlacklist.contains(itemID);
 	}
 
 	public void registerPredicate(String identifier, EquipmentSlot slot) {
@@ -79,7 +60,7 @@ public class VanitySlots implements ModInitializer {
 					return TriState.TRUE;
 				}
 			}
-			if ((slot == EquipmentSlot.HEAD) && stack.isIn(TagKey.of(Registry.ITEM_KEY, new Identifier("vanityslots", "wearable_on_head")))) {
+			if ((slot == EquipmentSlot.HEAD) && stack.isIn(TagKey.of(RegistryKeys.ITEM, new Identifier("vanityslots", "wearable_on_head")))) {
 				return TriState.TRUE;
 			}
 			return TriState.DEFAULT;

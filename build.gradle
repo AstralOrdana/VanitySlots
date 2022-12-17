@@ -1,6 +1,9 @@
 plugins {
-	id 'fabric-loom' version '0.12-SNAPSHOT'
+	id 'fabric-loom' version '1.0-SNAPSHOT'
 	id 'maven-publish'
+	id "co.uzzu.dotenv.gradle" version "2.0.0"
+	id "com.matthewprenger.cursegradle" version "1.4.0"
+	id "com.modrinth.minotaur" version "2.+"
 }
 
 sourceCompatibility = JavaVersion.VERSION_17
@@ -25,22 +28,25 @@ repositories {
 }
 
 dependencies {
-	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
-	// You may need to force-disable transitiveness on them.
-	modImplementation "dev.emi:trinkets:3.4.0"
+	modImplementation "dev.emi:trinkets:${project.trinkets_version}"
 
-	modApi("me.shedaniel.cloth:cloth-config-fabric:7.0.72") {
+	modApi("me.shedaniel.cloth:cloth-config-fabric:${project.clothconfig_version}") {
 		exclude(group: "net.fabricmc.fabric-api")
 	}
-	modImplementation "com.terraformersmc:modmenu:4.0.6"
+
+	modCompileOnly("com.terraformersmc:modmenu:${project.modmenu_version}") {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
+
+	modLocalRuntime("com.terraformersmc:modmenu:${project.modmenu_version}") {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
 }
 
 processResources {
@@ -52,20 +58,11 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	// ensure that the encoding is set to UTF-8, no matter what the system default is
-	// this fixes some edge cases with special characters not displaying correctly
-	// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-	// If Javadoc is generated, this must be specified in that task too.
 	it.options.encoding = "UTF-8"
-
-	// Minecraft 1.17 (21w19a) upwards uses Java 16.
 	it.options.release = 17
 }
 
 java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 }
 
@@ -93,5 +90,60 @@ publishing {
 	// To publish to maven local, no extra repositories are necessary. Just use the task `publishToMavenLocal`.
 	repositories {
 		// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+	}
+}
+
+import com.modrinth.minotaur.dependencies.ModDependency
+
+modrinth {
+	token = env.MODRINTH_TOKEN.value
+	projectId = 'YTVu0oG8'
+	versionNumber = project.mod_version
+	versionName = 'VanitySlots ' + project.mod_version
+	uploadFile = remapJar
+	gameVersions = List<String>.of(project.functional_versions.split(","))
+	loaders = ['fabric', 'quilt']
+	changelog = file("changelog.md").text
+	dependencies = [
+			new ModDependency('P7dR8mSH', 'required'), // Fabric API
+			new ModDependency('9s6osm5g', 'required'), // Cloth Config
+			new ModDependency('5aaWibi9', 'required'), // Trinkets
+			new ModDependency('mOgUt4GM', 'optional') // Mod Menu
+	]
+}
+
+curseforge {
+	apiKey = env.CURSEFORGE_TOKEN.value
+	project {
+		id = '570109'
+		releaseType = 'release'
+		changelog = file("changelog.md").text
+		changelogType = 'markdown'
+
+		for (version in functional_versions.split(",")) {
+			addGameVersion(version)
+		}
+
+		addGameVersion "Java 17"
+		addGameVersion "Fabric"
+		addGameVersion "Quilt"
+
+		relations {
+			requiredDependency("fabric-api")
+			requiredDependency("cloth-config")
+			requiredDependency("trinkets")
+			optionalDependency("modmenu")
+		}
+
+		mainArtifact(remapJar.archiveFile) {
+			displayName = 'VanitySlots ' + project.mod_version
+		}
+
+		afterEvaluate {
+			uploadTask.dependsOn remapJar
+		}
+	}
+	options {
+		forgeGradleIntegration = false
 	}
 }
