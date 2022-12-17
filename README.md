@@ -6,6 +6,4 @@ This mod adds four extra armor slots using the Trinkets mod that lets you displa
 
 Modrinth: https://modrinth.com/mod/vanity
 
-## License
-
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+Curseforge: https://www.curseforge.com/minecraft/mc-mods/vanityslots

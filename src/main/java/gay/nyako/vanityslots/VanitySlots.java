@@ -17,18 +17,25 @@
 */
 package gay.nyako.vanityslots;
 
+import dev.emi.trinkets.api.SlotType;
+import dev.emi.trinkets.api.TrinketComponent;
 import dev.emi.trinkets.api.TrinketsApi;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
+
+import java.util.Optional;
 
 public class VanitySlots implements ModInitializer {
 	public static VanitySlotsConfig CONFIG;
@@ -45,6 +52,39 @@ public class VanitySlots implements ModInitializer {
 		AutoConfig.register(VanitySlotsConfig.class, GsonConfigSerializer::new);
 
 		CONFIG = AutoConfig.getConfigHolder(VanitySlotsConfig.class).getConfig();
+	}
+
+	public static ItemStack getEquippedStack(LivingEntity entity, EquipmentSlot slot) {
+		if (!(entity instanceof PlayerEntity))
+			return entity.getEquippedStack(slot);
+
+		Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(entity);
+		if (component.isPresent()) {
+			TrinketComponent component2 = component.get();
+			for (var equipped : component2.getAllEquipped()) {
+				SlotType slotType = equipped.getLeft().inventory().getSlotType();
+				ItemStack itemStack = equipped.getRight();
+				if (!slotType.getName().equals("vanity")) {
+					continue;
+				}
+				if (itemStack.isEmpty()) continue;
+
+				if ((slot == EquipmentSlot.FEET) && (slotType.getGroup().equals("feet"))) {
+					return itemStack;
+				}
+				if ((slot == EquipmentSlot.LEGS) && (slotType.getGroup().equals("legs"))) {
+					return itemStack;
+				}
+				if ((slot == EquipmentSlot.CHEST) && (slotType.getGroup().equals("chest"))) {
+					return itemStack;
+				}
+				if ((slot == EquipmentSlot.HEAD) && (slotType.getGroup().equals("head"))) {
+					return itemStack;
+				}
+			}
+		}
+
+		return entity.getEquippedStack(slot);
 	}
 
 	public boolean isInBlacklist(Item item) {
