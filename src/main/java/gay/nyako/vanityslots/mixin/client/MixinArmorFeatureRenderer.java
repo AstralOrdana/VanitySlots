@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ArmorFeatureRenderer.class)
+@Mixin(value = ArmorFeatureRenderer.class, priority = 800)
 public abstract class MixinArmorFeatureRenderer<T extends LivingEntity, M extends BipedEntityModel<T>> extends FeatureRenderer<T, M> {
 
     public MixinArmorFeatureRenderer(FeatureRendererContext<T, M> context) {
