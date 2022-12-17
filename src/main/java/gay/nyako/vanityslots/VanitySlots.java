@@ -40,6 +40,8 @@ import java.util.Optional;
 public class VanitySlots implements ModInitializer {
 	public static VanitySlotsConfig CONFIG;
 
+	public static boolean USE_VANITY;
+
 	@Override
 	public void onInitialize() {
 		RegisterItems.register();
@@ -52,11 +54,11 @@ public class VanitySlots implements ModInitializer {
 		AutoConfig.register(VanitySlotsConfig.class, GsonConfigSerializer::new);
 
 		CONFIG = AutoConfig.getConfigHolder(VanitySlotsConfig.class).getConfig();
+		USE_VANITY = false;
 	}
 
-	public static ItemStack getEquippedStack(LivingEntity entity, EquipmentSlot slot) {
-		if (!(entity instanceof PlayerEntity))
-			return entity.getEquippedStack(slot);
+	public static ItemStack getVanityStack(LivingEntity entity, EquipmentSlot slot) {
+		if (!(entity instanceof PlayerEntity)) return ItemStack.EMPTY;
 
 		Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(entity);
 		if (component.isPresent()) {
@@ -82,6 +84,18 @@ public class VanitySlots implements ModInitializer {
 					return itemStack;
 				}
 			}
+		}
+		return ItemStack.EMPTY;
+	}
+
+	public static ItemStack getEquippedStack(LivingEntity entity, EquipmentSlot slot) {
+		if (!(entity instanceof PlayerEntity))
+			return entity.getEquippedStack(slot);
+
+		ItemStack vanity = getVanityStack(entity, slot);
+		if (!vanity.isEmpty())
+		{
+			return vanity;
 		}
 
 		return entity.getEquippedStack(slot);

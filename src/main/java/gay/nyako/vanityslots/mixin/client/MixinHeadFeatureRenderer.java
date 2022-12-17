@@ -1,8 +1,6 @@
 package gay.nyako.vanityslots.mixin.client;
 
-import dev.emi.trinkets.api.SlotType;
-import dev.emi.trinkets.api.TrinketComponent;
-import dev.emi.trinkets.api.TrinketsApi;
+import gay.nyako.vanityslots.VanitySlots;
 import net.minecraft.client.render.entity.feature.HeadFeatureRenderer;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -12,8 +10,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import java.util.Optional;
-
 @Mixin(HeadFeatureRenderer.class)
 public class MixinHeadFeatureRenderer<T extends LivingEntity> {
 
@@ -22,21 +18,9 @@ public class MixinHeadFeatureRenderer<T extends LivingEntity> {
         if (!(entity instanceof PlayerEntity))
             return entity.getEquippedStack(slot);
 
-        Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(entity);
-        if (component.isPresent()) {
-            TrinketComponent component2 = component.get();
-            for (var equipped : component2.getAllEquipped()) {
-                SlotType slotType = equipped.getLeft().inventory().getSlotType();
-                ItemStack itemStack = equipped.getRight();
-                if (!slotType.getName().equals("vanity")) {
-                    continue;
-                }
-                if (itemStack.isEmpty()) continue;
-
-                if ((slot == EquipmentSlot.HEAD) && (slotType.getGroup().equals("head"))) {
-                    return itemStack;
-                }
-            }
+        ItemStack vanity = VanitySlots.getVanityStack(entity, slot);
+        if (!vanity.isEmpty()) {
+            return vanity;
         }
 
         return entity.getEquippedStack(slot);

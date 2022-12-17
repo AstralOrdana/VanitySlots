@@ -6,6 +6,7 @@
   "mixins": [
     "MixinEndermanEntity",
     "MixinGetAttackDistanceScalingFactor",
+    "MixinPlayerEntity",
     "MixinPiglinBrain"
   ],
   "client": [

@@ -1,1 +1,1 @@
-This update targets Minecraft 1.19.3. ModMenu is no longer a required dependency, and a lot of internal changes have been made to make development of this mod easier.
+This update fixes rendering issues with mods which use the Fabric Armor Rendering API!! This should fix a lot of mods which use 3d models, such as Mythic Metals, The Bumblezone, Botania, MCDoom, Immersive Armors, etc. This also cleans up the code a little bit more.

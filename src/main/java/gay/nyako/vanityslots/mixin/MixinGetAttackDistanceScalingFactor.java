@@ -3,6 +3,7 @@ package gay.nyako.vanityslots.mixin;
 import dev.emi.trinkets.api.SlotType;
 import dev.emi.trinkets.api.TrinketComponent;
 import dev.emi.trinkets.api.TrinketsApi;
+import gay.nyako.vanityslots.VanitySlots;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -68,28 +69,9 @@ public class MixinGetAttackDistanceScalingFactor {
     @Redirect(method = "getAttackDistanceScalingFactor", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getEquippedStack(Lnet/minecraft/entity/EquipmentSlot;)Lnet/minecraft/item/ItemStack;"))
     private ItemStack injected(LivingEntity instance, EquipmentSlot equipmentSlot) {
         if (instance instanceof PlayerEntity) {
-            Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(instance);
-            if (component.isPresent()) {
-                TrinketComponent component2 = component.get();
-                for (var equipped : component2.getAllEquipped()) {
-                    SlotType slotType = equipped.getLeft().inventory().getSlotType();
-                    ItemStack itemStack = equipped.getRight();
-                    if (!slotType.getName().equals("vanity")) {
-                        continue;
-                    }
-                    if (slotType.getGroup().equals("feet")) {
-                        if (!itemStack.isEmpty()) return itemStack;
-                    }
-                    if (slotType.getGroup().equals("legs")) {
-                        if (!itemStack.isEmpty()) return itemStack;
-                    }
-                    if (slotType.getGroup().equals("chest")) {
-                        if (!itemStack.isEmpty()) return itemStack;
-                    }
-                    if (slotType.getGroup().equals("head")) {
-                        if (!itemStack.isEmpty()) return itemStack;
-                    }
-                }
+            ItemStack vanity = VanitySlots.getVanityStack(instance, equipmentSlot);
+            if (!vanity.isEmpty()) {
+                return vanity;
             }
         }
         return instance.getEquippedStack(equipmentSlot);
