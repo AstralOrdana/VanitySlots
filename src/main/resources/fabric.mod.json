@@ -30,8 +30,8 @@
   "depends": {
     "fabricloader": ">=0.14.11",
     "fabric": "*",
-    "minecraft": "1.18.2",
-    "trinkets": ">=3.3.1",
+    "minecraft": "1.19.2",
+    "trinkets": ">=3.4.1",
     "java": ">=17"
   },
   "suggests": {
