@@ -1,8 +1,5 @@
 package gay.nyako.vanityslots.mixin.client;
 
-import dev.emi.trinkets.api.SlotType;
-import dev.emi.trinkets.api.TrinketComponent;
-import dev.emi.trinkets.api.TrinketsApi;
 import gay.nyako.vanityslots.VanitySlots;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.entity.EquipmentSlot;
@@ -12,8 +9,6 @@ import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-
-import java.util.Optional;
 
 @Mixin(InGameHud.class)
 public class MixinInGameHud<T extends LivingEntity> {

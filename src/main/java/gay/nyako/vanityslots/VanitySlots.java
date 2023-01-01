@@ -30,10 +30,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 
 import java.util.Optional;
 
@@ -102,7 +102,7 @@ public class VanitySlots implements ModInitializer {
 	}
 
 	public boolean isInBlacklist(Item item) {
-		String itemID = Registries.ITEM.getId(item).toString();
+		String itemID = Registry.ITEM.getId(item).toString();
 		return CONFIG.itemBlacklist.contains(itemID);
 	}
 
@@ -114,7 +114,7 @@ public class VanitySlots implements ModInitializer {
 					return TriState.TRUE;
 				}
 			}
-			if ((slot == EquipmentSlot.HEAD) && stack.isIn(TagKey.of(RegistryKeys.ITEM, new Identifier("vanityslots", "wearable_on_head")))) {
+			if ((slot == EquipmentSlot.HEAD) && stack.isIn(TagKey.of(Registry.ITEM_KEY, new Identifier("vanityslots", "wearable_on_head")))) {
 				return TriState.TRUE;
 			}
 			return TriState.DEFAULT;
