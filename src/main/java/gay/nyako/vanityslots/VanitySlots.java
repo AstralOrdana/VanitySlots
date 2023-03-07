@@ -24,6 +24,7 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.util.TriState;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -111,10 +112,16 @@ public class VanitySlots implements ModInitializer {
 			if (isInBlacklist(stack.getItem())) return TriState.FALSE;
 			if (stack.getItem() instanceof ArmorItem) {
 				if (((ArmorItem) stack.getItem()).getSlotType() == slot) {
+					if (CONFIG.disallowBinding && EnchantmentHelper.hasBindingCurse(stack)) {
+						return TriState.FALSE;
+					}
 					return TriState.TRUE;
 				}
 			}
 			if ((slot == EquipmentSlot.HEAD) && stack.isIn(TagKey.of(RegistryKeys.ITEM, new Identifier("vanityslots", "wearable_on_head")))) {
+				if (CONFIG.disallowBinding && EnchantmentHelper.hasBindingCurse(stack)) {
+					return TriState.FALSE;
+				}
 				return TriState.TRUE;
 			}
 			return TriState.DEFAULT;
