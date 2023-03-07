@@ -10,4 +10,7 @@ import java.util.List;
 public class VanitySlotsConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip
     public List<String> itemBlacklist = List.of();
+
+    @ConfigEntry.Gui.Tooltip
+    public boolean disallowBinding = true;
 }
