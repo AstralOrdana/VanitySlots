@@ -1,1 +1,1 @@
-This update supports 1.19.4.
+This update disables the trinket tooltip text.
