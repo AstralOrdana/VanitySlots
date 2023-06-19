@@ -18,7 +18,7 @@ import java.util.Optional;
 @Mixin(InGameHud.class)
 public class MixinInGameHud<T extends LivingEntity> {
 
-    @Redirect(method = "render(Lnet/minecraft/client/util/math/MatrixStack;F)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerInventory;getArmorStack(I)Lnet/minecraft/item/ItemStack;"))
+    @Redirect(method = "render(Lnet/minecraft/client/gui/DrawContext;F)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerInventory;getArmorStack(I)Lnet/minecraft/item/ItemStack;"))
     public ItemStack vanityslots$render(PlayerInventory instance, int slot) {
 
         EquipmentSlot slotType = null;
