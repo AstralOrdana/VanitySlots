@@ -1,1 +1,1 @@
-This update disables the trinket tooltip text.
+This update removes the `wearable_on_head` tag in favor of allowing all Equipment items (thanks AstralOrdana for #16!) and updates the mod to 1.20.2.
