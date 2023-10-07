@@ -21,7 +21,7 @@ public class MixinGetAttackDistanceScalingFactor {
     private float injected(LivingEntity entity) {
         Iterable<ItemStack> iterable = entity.getArmorItems();
 
-        List<ItemStack> visible_armor = new ArrayList<ItemStack>();
+        List<ItemStack> visible_armor = new ArrayList<>();
         int i = 0;
         for(Iterator<ItemStack> var4 = iterable.iterator(); var4.hasNext(); ++i) {
             ItemStack itemStack = var4.next();

@@ -28,7 +28,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Equipment
+import net.minecraft.item.Equipment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
@@ -110,7 +110,7 @@ public class VanitySlots implements ModInitializer {
 	public void registerPredicate(String identifier, EquipmentSlot slot) {
 		TrinketsApi.registerTrinketPredicate(new Identifier("vanityslots", identifier), (stack, ref, entity) -> {
 			if (isInBlacklist(stack.getItem())) return TriState.FALSE;
-			Equipment equipment = Equipment.get(item);
+			Equipment equipment = Equipment.fromStack(stack);
 			if (equipment != null) {
 				if (equipment.getSlotType() == slot) {
 					if (CONFIG.disallowBinding && EnchantmentHelper.hasBindingCurse(stack)) {
@@ -118,12 +118,6 @@ public class VanitySlots implements ModInitializer {
 					}
 					return TriState.TRUE;
 				}
-			}
-			if ((slot == EquipmentSlot.HEAD) && stack.isIn(TagKey.of(RegistryKeys.ITEM, new Identifier("vanityslots", "wearable_on_head")))) {
-				if (CONFIG.disallowBinding && EnchantmentHelper.hasBindingCurse(stack)) {
-					return TriState.FALSE;
-				}
-				return TriState.TRUE;
 			}
 			return TriState.DEFAULT;
 		});
